@@ -276,11 +276,11 @@
       <div class="legend">
         <div class="legend-row">
           <span class="legend-label">はんそで</span>
-          <span>23℃〜</span>
+          <span>20℃〜</span>
         </div>
         <div class="legend-row">
           <span class="legend-label">ながそで</span>
-          <span>15〜22℃</span>
+          <span>15〜19℃</span>
         </div>
         <div class="legend-row">
           <span class="legend-label">ながそで ＋ うわぎ</span>
@@ -355,13 +355,13 @@
     }
 
     function getClothingAdvice(maxTemp) {
-      if (maxTemp >= 23) return "はんそで";
+      if (maxTemp >= 20) return "はんそで";
       if (maxTemp >= 15) return "ながそで";
       return "ながそで ＋ うわぎ";
     }
 
     function getClothingNote(maxTemp) {
-      if (maxTemp >= 23) return `${maxTemp}℃くらい / あたたかいひです。`;
+      if (maxTemp >= 20) return `${maxTemp}℃くらい / あたたかいひです。`;
       if (maxTemp >= 15) return `${maxTemp}℃くらい / すごしやすい きおんです。`;
       return `${maxTemp}℃くらい / うわぎが あると あんしんです。`;
     }
@@ -409,8 +409,8 @@
     }
 
     function runTests() {
-      console.assert(getClothingAdvice(23) === "はんそで", "23℃以上は、はんそで");
-      console.assert(getClothingAdvice(22) === "ながそで", "22℃は、ながそで");
+      console.assert(getClothingAdvice(20) === "はんそで", "20℃以上は、はんそで");
+      console.assert(getClothingAdvice(19) === "ながそで", "19℃は、ながそで");
       console.assert(getClothingAdvice(15) === "ながそで", "15℃は、ながそで");
       console.assert(getClothingAdvice(14) === "ながそで ＋ うわぎ", "14℃以下は、ながそで ＋ うわぎ");
 
