@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>きょうのふくそう</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #bfdbfe, #ddd6fe, #fef9c3);
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 640px;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 32px;
+      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.16);
+      padding: 28px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 7vw, 52px);
+      line-height: 1.1;
+      margin: 0 0 10px;
+      letter-spacing: -0.03em;
+      color: #2563eb;
+    }
+
+    .lead {
+      margin: 0;
+      color: #64748b;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .date {
+      font-size: 16px;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .badge {
+      display: inline-flex;
+      white-space: nowrap;
+      font-size: 12px;
+      color: #475569;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 8px 12px;
+      margin-top: 14px;
+    }
+
+    .search {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    input {
+      display: none;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      background: #2563eb;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .message {
+      min-height: 20px;
+      color: #94a3b8;
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .current {
+      display: none;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid #dbeafe;
+      border-radius: 28px;
+      padding: 24px;
+    }
+
+    .place {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 6px;
+    }
+
+    .temp {
+      font-size: clamp(54px, 12vw, 86px);
+      line-height: 0.95;
+      letter-spacing: -0.08em;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .weather {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.2);
+      color: #f8fafc;
+    }
+
+    
+
+    
+
+    .clothing {
+      display: none;
+      margin-bottom: 0;
+      background: linear-gradient(135deg, #60a5fa, #818cf8);
+      color: white;
+      border-radius: 32px;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+
+    .clothing-title {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: #eff6ff;
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+      padding: 7px 13px;
+      margin-bottom: 18px;
+    }
+
+    .clothing-main {
+      text-align: center;
+      font-size: clamp(52px, 14vw, 86px);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    
+
+    .clothing-note {
+      text-align: center;
+      margin: 0 auto 18px;
+      color: #eff6ff;
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 420px;
+    }
+
+    
+
+    .footer {
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 32px;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .legend {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      margin-top: 14px;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.6;
+      background: rgba(241,245,249,0.8);
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      text-align: left;
+      margin-bottom: 32px;
+    }
+
+    .legend-row {
+      display: flex;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .legend-label {
+      min-width: 110px;
+      font-weight: 700;
+    }
+
+    .updated-time {
+      opacity: 0.72;
+    }
+
+    @media (max-width: 680px) {
+      .app {
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      .header {
+        display: block;
+      }
+
+      .badge {
+        display: inline-block;
+        margin-top: 14px;
+      }
+
+      .search {
+        grid-template-columns: 1fr;
+      }
+
+      .current {
+        grid-template-columns: 1fr;
+      }
+
+      
+
+      .clothing {
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="header">
+      <div>
+        <h1>きょうの ふくそう</h1>
+        <div class="date" id="todayDate"></div>
+      </div>
+    </section>
+
+    <div class="search">
+      <input id="cityInput" type="text" value="宮城県仙台市" disabled />
+      <button id="searchButton" type="button">🔄 こうしん</button>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <section class="current" id="currentWeather">
+      <section class="clothing" id="clothingAdvice">
+        <div class="clothing-title">きょうは これ</div>
+        <div class="clothing-main" id="clothingMain"></div>
+        <div class="clothing-note" id="clothingNote"></div>
+        <div>
+          <div class="weather" id="currentDescription"></div>
+        </div>
+      </section>
+    </section>
+
+    
+
+    <div class="footer">
+      <div class="legend">
+        <div class="legend-row">
+          <span class="legend-label">はんそで</span>
+          <span>23℃〜</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-label">ながそで</span>
+          <span>15〜22℃</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-label">ながそで ＋ うわぎ</span>
+          <span>〜14℃</span>
+        </div>
+      </div>
+      <div>位置検索と天気データは Open-Meteo の無料APIを使用しています。</div>
+      <div class="updated-time" id="footerUpdatedAt"></div>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById("searchForm");
+    const cityInput = document.getElementById("cityInput");
+    const searchButton = document.getElementById("searchButton");
+    const message = document.getElementById("message");
+    const currentWeather = document.getElementById("currentWeather");
+    
+    const clothingAdvice = document.getElementById("clothingAdvice");
+    const clothingMain = document.getElementById("clothingMain");
+    const clothingNote = document.getElementById("clothingNote");
+
+    const weatherMap = {
+      0: ["☀️", "快晴"],
+      1: ["🌤️", "晴れ"],
+      2: ["⛅", "一部くもり"],
+      3: ["☁️", "くもり"],
+      45: ["🌫️", "霧"],
+      48: ["🌫️", "霧氷"],
+      51: ["🌦️", "弱い霧雨"],
+      53: ["🌦️", "霧雨"],
+      55: ["🌧️", "強い霧雨"],
+      61: ["🌦️", "弱い雨"],
+      63: ["🌧️", "雨"],
+      65: ["🌧️", "強い雨"],
+      71: ["🌨️", "弱い雪"],
+      73: ["🌨️", "雪"],
+      75: ["❄️", "強い雪"],
+      80: ["🌦️", "にわか雨"],
+      81: ["🌧️", "にわか雨"],
+      82: ["⛈️", "強いにわか雨"],
+      95: ["⛈️", "雷雨"],
+      96: ["⛈️", "雷雨・ひょう"],
+      99: ["⛈️", "強い雷雨・ひょう"]
+    };
+
+    function getWeatherInfo(code) {
+      return weatherMap[code] || ["🌡️", "不明"];
+    }
+
+    function formatDate(dateText) {
+      const date = new Date(dateText);
+      return new Intl.DateTimeFormat("ja-JP", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long"
+      }).format(date);
+    }
+
+    function formatTime(dateText) {
+      const date = new Date(dateText);
+      return new Intl.DateTimeFormat("ja-JP", {
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(date);
+    }
+
+    function getClothingAdvice(maxTemp) {
+      if (maxTemp >= 23) {
+        return ["👕", "はんそで", "あたたかいひです。"];
+      }
+
+      if (maxTemp >= 15) {
+        return ["🧶", "ながそで", "すごしやすい きおんです。"];
+      }
+
+      return ["🧥", "ながそで ＋ うわぎ", "さむいので うわぎが あると あんしんです。"];
+    }
+
+    function getFixedLocation() {
+      return {
+        name: "仙台市",
+        admin1: "宮城県",
+        latitude: 38.2682,
+        longitude: 140.8694
+      };
+    }
+
+    async function fetchWeather(location) {
+      const params = new URLSearchParams({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        timezone: "auto",
+        current: "temperature_2m,weather_code",
+        daily: "weather_code,temperature_2m_max,temperature_2m_min",
+        forecast_days: "1"
+      });
+
+      const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+      if (!response.ok) throw new Error("天気データの取得に失敗しました。時間をおいて試してください。");
+      return response.json();
+    }
+
+    function renderWeather(location, data) {
+      const current = data.current;
+      document.getElementById("todayDate").textContent = formatDate(current.time);
+      const [icon, description] = getWeatherInfo(current.weather_code);
+
+      
+      document.getElementById("currentDescription").textContent = `${icon} ${description}`;
+      
+      document.getElementById("footerUpdatedAt").textContent = `最終更新 ${formatTime(current.time)}`;
+
+      const todayMaxTemp = Math.round(data.daily.temperature_2m_max[0]);
+      const [, clothing, clothingReason] = getClothingAdvice(todayMaxTemp);
+
+      clothingMain.textContent = clothing;
+      clothingNote.textContent = `${todayMaxTemp}℃くらい / ${clothingReason}`;
+      clothingAdvice.style.display = "block";
+
+      
+
+      currentWeather.style.display = "grid";
+      
+      message.textContent = "";
+    }
+
+    async function handleSearch(event) {
+      if (event && typeof event.preventDefault === "function") {
+        event.preventDefault();
+      }
+
+      const location = getFixedLocation();
+
+      searchButton.disabled = true;
+      message.textContent = "てんきを よみこんでいます...";
+      currentWeather.style.display = "none";
+      
+      clothingAdvice.style.display = "none";
+
+      try {
+        const weather = await fetchWeather(location);
+        renderWeather(location, weather);
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        searchButton.disabled = false;
+      }
+    }
+
+    searchButton.addEventListener("click", handleSearch);
+    handleSearch();
+  </script>
+</body>
+</html>
